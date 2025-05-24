@@ -12,7 +12,7 @@ from PyQt6.QtGui import QFont, QPalette, QColor, QLinearGradient, QGradient
 
 from aiPyQtTest import generateGUT;
 
-#from aiGeneratedFunctions import load_training_data;
+#from aiGeneratedFunctions import load_training_data; a
 
 #generateGUT();
 
