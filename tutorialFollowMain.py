@@ -12,6 +12,10 @@ from PyQt6.QtGui import QFont, QPalette, QColor, QLinearGradient, QGradient
 
 from aiPyQtTest import generateGUT;
 
+from aiGeneratedFunctions import load_training_data;
+
+from aiGeneratedFunctions import load_nonlabeled_data;
+
 #from aiGeneratedFunctions import load_training_data; a
 
 #generateGUT();
@@ -38,19 +42,16 @@ def trainNeuralNetwork():
 
 def evaluateUsingLabeledData():
     model = tf.keras.models.load_model("JMEodel.keras")
-    image_number = 4
-    while os.path.isfile(f"28by28_Drawn/digit{image_number}.png"):
+    imagesToPredict = load_nonlabeled_data("28by28_Drawn");
+
+    for image in imagesToPredict:
         try:
-            img = cv2.imread(f"28by28_Drawn/digit{image_number}.png")[:,:,0]
-            img = np.invert(np.array([img]))
-            prediction = model.predict(img)
+            prediction = model.predict(image)
             print(f"This digit is probably a {np.argmax(prediction)}")
-            plt.imshow(img[0], cmap=plt.cm.binary)
+            plt.imshow(image[0], cmap=plt.cm.binary)
             plt.show()
         except:
-            print("error");
-        finally:
-            image_number += 1;
+            print("SOMETHING WENT WRONG")
 
 def predictUsingModel():
     print("predictUsingModel");
