@@ -24,13 +24,11 @@ def load_training_data(directory="trainingData"):
         if filename.endswith((".png", ".jpg", ".jpeg")):  # Check for valid image formats
             filepath = os.path.join(directory, filename)
             
-            # Extract label from filename (format: "ID-label")
-            parts = filename.split("-")
-            if len(parts) != 2:
-                continue  # Skip files not matching the expected pattern
-            
-            image_id = int(parts[0])  # Extract numerical ID
-            label = parts[1][0]  # Extract character label
+            #Split string that is file path of img
+            parts = filename.split("_")
+
+            # Extract character label
+            label = parts[len(parts)-1]  
             
             # Load image using OpenCV and convert to a NumPy array
             image = cv2.imread(filepath)[:,:,0]
@@ -79,6 +77,17 @@ def load_nonlabeled_data(directory="nonLabeledInput"):
 
     return np.array(images)
 
-# Example usage
-#X_train, y_train = load_training_data("trainingData")
-#print(f"Loaded {X_train.shape[0]} images.")
+
+def print_image_array(image_array):
+    """
+    Prints the 2D array of pixel values from a given image numpy array.
+    Handles both single images and batches (with shape [1, H, W] or [H, W]).
+    """
+    # If the image is wrapped in an extra dimension (e.g., [1, H, W]), squeeze it
+    if image_array.ndim == 3 and image_array.shape[0] == 1:
+        image_array = image_array[0]
+    
+    for row in image_array:
+        print(' '.join(f'{val:3}' for val in row))
+
+

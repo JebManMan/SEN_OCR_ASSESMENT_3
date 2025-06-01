@@ -12,19 +12,35 @@ from PyQt6.QtGui import QFont, QPalette, QColor, QLinearGradient, QGradient
 
 from aiPyQtTest import generateGUT;
 
+#importing functions from aiGeneratedFunctions.py
 from aiGeneratedFunctions import load_training_data;
-
 from aiGeneratedFunctions import load_nonlabeled_data;
+from aiGeneratedFunctions import print_image_array;
 
-#from aiGeneratedFunctions import load_training_data; a
 
 #generateGUT();
 
 def trainNeuralNetwork():
 
     #Getting standadrd training data
+    '''
     mnist = tf.keras.datasets.mnist
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
+    '''
+    #Loading raw label and image data from file
+    x_data, y_data = load_training_data("__Image Files__")
+    
+    
+    #Cutting data set into halves to train and test
+    x_split = np.split(x_data,2);
+    x_train = x_split[0];
+    x_test = x_split[1];
+    
+    y_split = np.split(y_data,2);
+    y_train = y_split[0];
+    y_test = y_split[1]
+
+    
     x_train = tf.keras.utils.normalize(x_train, axis=1)
     x_test = tf.keras.utils.normalize(x_test, axis=1)
 
@@ -33,7 +49,7 @@ def trainNeuralNetwork():
     model.add(tf.keras.layers.Flatten(input_shape=(28,28)))
     model.add(tf.keras.layers.Dense(128, activation='relu'))
     model.add(tf.keras.layers.Dense(100, activation='relu'))
-    model.add(tf.keras.layers.Dense(36,activation='softmax'))
+    model.add(tf.keras.layers.Dense(10,activation='softmax'))
 
     model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
     model.fit(x = x_train,y = y_train, epochs=3)
@@ -46,6 +62,7 @@ def evaluateUsingLabeledData():
 
     for image in imagesToPredict:
         try:
+            print_image_array(image)
             prediction = model.predict(image)
             print(f"This digit is probably a {np.argmax(prediction)}")
             plt.imshow(image[0], cmap=plt.cm.binary)
