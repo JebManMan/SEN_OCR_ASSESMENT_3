@@ -30,9 +30,12 @@ def trainNeuralNetwork():
     #Loading raw label and image data from file
     x_data, y_data = load_training_data("__Image Files__")
     
-    
+    print_image_array(x_data[0])
+    print(y_data);
+
     #Cutting data set into halves to train and test
     x_split = np.split(x_data,2);
+    print(x_split);
     x_train = x_split[0];
     x_test = x_split[1];
     
@@ -40,13 +43,16 @@ def trainNeuralNetwork():
     y_train = y_split[0];
     y_test = y_split[1]
 
-    
+    print_image_array(x_train[len(x_train)-1])
+
+
     x_train = tf.keras.utils.normalize(x_train, axis=1)
     x_test = tf.keras.utils.normalize(x_test, axis=1)
 
 
     model = tf.keras.models.Sequential()
-    model.add(tf.keras.layers.Flatten(input_shape=(28,28)))
+    model.add(tf.keras.layers.Input(shape=(28,28,1)));
+    model.add(tf.keras.layers.Flatten());
     model.add(tf.keras.layers.Dense(128, activation='relu'))
     model.add(tf.keras.layers.Dense(100, activation='relu'))
     model.add(tf.keras.layers.Dense(10,activation='softmax'))

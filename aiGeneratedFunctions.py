@@ -32,9 +32,31 @@ def load_training_data(directory="trainingData"):
             
             # Load image using OpenCV and convert to a NumPy array
             image = cv2.imread(filepath)[:,:,0]
-            image = np.invert(np.array([image]))
+            #image = np.invert(np.array([image]))
+            image = np.invert(image);
+            
             #image = cv2.resize(img, (28, 28))  # Resize to **24×24 pixels**
             #image = image.astype(np.float32) / 255.0  # Normalize pixel values (0 to 1)
+
+            label = label.replace('.png', '')
+            label = label.replace('.jpeg', '')
+            label = label.replace('.jpg', "")
+
+            ascii_dict = {
+            '0': ord('0'), '1': ord('1'), '2': ord('2'), '3': ord('3'), '4': ord('4'),
+            '5': ord('5'), '6': ord('6'), '7': ord('7'), '8': ord('8'), '9': ord('9'),
+            'A': ord('a'), 'B': ord('b'), 'C': ord('c'), 'D': ord('d'), 'E': ord('e'),
+            'F': ord('f'), 'G': ord('g'), 'H': ord('h'), 'I': ord('i'), 'J': ord('j'),
+            'K': ord('k'), 'L': ord('l'), 'M': ord('m'), 'N': ord('n'), 'O': ord('o'),
+            'P': ord('p'), 'Q': ord('q'), 'R': ord('r'), 'S': ord('s'), 'T': ord('t'),
+            'U': ord('u'), 'V': ord('v'), 'W': ord('w'), 'X': ord('x'), 'Y': ord('y'),
+            'Z': ord('z'), 'ampersand': ord('&'), 'asterisk': ord('*'), 'at': ord('@'),
+            'dollar': ord('$'), 'exclmark': ord('!'), 'greaterthan': ord('>'),
+            'hash': ord('#'), 'lessthan': ord('<'), 'minus': ord('-'),
+            'percent': ord('%'), 'plus': ord('+'), 'quesmark': ord('?')
+            }
+
+            label = ascii_dict[label];
 
             images.append(image)
             labels.append(label)
