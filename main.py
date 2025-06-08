@@ -44,20 +44,23 @@ def trainNeuralNetwork():
     print(y_data);
 
     #Cutting data set into halves to train and test
-    x_split = np.split(x_data,2);
-    print(x_split);
-    x_train = x_split[0];
-    x_test = x_split[1];
+    #x_split = np.split(x_data,2);
+    #print(x_split);
+    #x_train = x_split[0];
+    #x_test = x_split[1];
     
-    y_split = np.split(y_data,2);
-    y_train = y_split[0];
-    y_test = y_split[1]
+    #y_split = np.split(y_data,2);
+    #y_train = y_split[0];
+    #y_test = y_split[1]
+
+    x_train = x_data
+    y_train = y_data
 
     print_image_array(x_train[len(x_train)-1])
 
 
     x_train = tf.keras.utils.normalize(x_train, axis=1)
-    x_test = tf.keras.utils.normalize(x_test, axis=1)
+    #x_test = tf.keras.utils.normalize(x_test, axis=1)
 
 
     model = tf.keras.models.Sequential()
@@ -66,10 +69,11 @@ def trainNeuralNetwork():
     model.add(tf.keras.layers.Dense(200, activation='relu'))
     model.add(tf.keras.layers.Dense(128, activation='relu'))
     model.add(tf.keras.layers.Dense(100, activation='relu'))
+    model.add(tf.keras.layers.Dense(70, activation='relu'))
     model.add(tf.keras.layers.Dense(48,activation='softmax'))
 
     model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
-    model.fit(x = x_train,y = y_train, epochs=25)
+    model.fit(x = x_train,y = y_train, epochs=10)
 
     model.save("JMEodel.keras")
 

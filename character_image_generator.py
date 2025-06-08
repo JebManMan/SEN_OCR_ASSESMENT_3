@@ -6,11 +6,11 @@ import string
 size = 28
 img_size = (size, size)
 font_size = 32
-output_dir = "character_images"
+output_dir = "__Image Files__"
 #You will need to download the font and provide the path
-font_path = "Fonts\\Oxygen-Bold.ttf"
+font_path = "fonts\\QueenLorient-4n6zx.ttf"
 #Don't forget to update the encoding!
-encoding = "oxygen_bold_32"
+encoding = "QueenLorient_regular_32"
 
 '''
 This program will generate a list of characters as images.
