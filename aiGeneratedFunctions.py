@@ -34,6 +34,7 @@ def load_training_data(directory="trainingData"):
             image = cv2.imread(filepath)[:,:,0]
             #image = np.invert(np.array([image]))
             image = np.invert(image);
+            np.array(image).reshape(28,28,1);
             
             #image = cv2.resize(img, (28, 28))  # Resize to **24×24 pixels**
             #image = image.astype(np.float32) / 255.0  # Normalize pixel values (0 to 1)
@@ -56,7 +57,17 @@ def load_training_data(directory="trainingData"):
             'percent': ord('%'), 'plus': ord('+'), 'quesmark': ord('?')
             }
 
-            label = ascii_dict[label];
+            char_to_id = {
+            '0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9,
+            'A': 10, 'B': 11, 'C': 12, 'D': 13, 'E': 14, 'F': 15, 'G': 16, 'H': 17, 'I': 18,
+            'J': 19, 'K': 20, 'L': 21, 'M': 22, 'N': 23, 'O': 24, 'P': 25, 'Q': 26, 'R': 27,
+            'S': 28, 'T': 29, 'U': 30, 'V': 31, 'W': 32, 'X': 33, 'Y': 34, 'Z': 35,
+            'ampersand': 36, 'asterisk': 37, 'at': 38, 'dollar': 39, 'exclmark': 40,
+            'greaterthan': 41, 'hash': 42, 'lessthan': 43, 'minus': 44, 'percent': 45,
+            'plus': 46, 'quesmark': 47
+            }
+
+            label = char_to_id[label];
 
             images.append(image)
             labels.append(label)
