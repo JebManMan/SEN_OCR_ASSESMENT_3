@@ -1,6 +1,8 @@
 import os
 import cv2
 import numpy as np
+import math
+import matplotlib.pyplot as plt
 
 def load_training_data(directory="trainingData"):
     """
@@ -124,3 +126,47 @@ def print_image_array(image_array):
         print(' '.join(f'{val:3}' for val in row))
 
 
+#Gnerated on the 9/06/2025 using copiolet
+#Modified and reviewed
+def display_predictions(model, imagesToPredict, idToName):
+    num_images = len(imagesToPredict)
+    if num_images == 0:
+        print("No images provided.")
+        return
+
+    # Determine grid size based on the number of images
+    nrows = int(math.ceil(math.sqrt(num_images)))
+    ncols = int(math.ceil(num_images / nrows))
+    
+    # Create a figure with the appropriate number of subplots
+    fig, axes = plt.subplots(nrows, ncols, figsize=(ncols * 3, nrows * 3))
+    
+    # If only one image, ensure axes is always iterable
+    if num_images == 1:
+        axes = [axes]
+    else:
+        # Flatten in case we have a 2D array of axes
+        axes = axes.flatten()
+
+    # Loop over images and make predictions
+    for i, image in enumerate(imagesToPredict):
+        ax = axes[i]
+        try:
+            # Get prediction for the image
+            prediction = model.predict(image)
+            predicted_class = int(np.argmax(prediction))
+            predicted_label = idToName[predicted_class]
+            
+            # Display image and predicted label
+            ax.imshow(image[0], cmap='binary')
+            ax.set_title(predicted_label)
+            ax.axis('off')
+        except Exception as e:
+            print(f"Error processing image {i}: {e}")
+            ax.text(0.5, 0.5, "Error", ha="center", va="center", transform=ax.transAxes)
+            ax.axis('off')
+    
+    # Hide any extra subplots in the grid
+    for j in range(i + 1, len(axes)):
+        axes[j].axis('off')
+    plt.show()

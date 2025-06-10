@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import os
 import tensorflow as tf
+import math
 
 #GUI Imports
 import matplotlib.pyplot as plt
@@ -16,6 +17,7 @@ from aiPyQtTest import generateGUT;
 from aiGeneratedFunctions import load_training_data;
 from aiGeneratedFunctions import load_nonlabeled_data;
 from aiGeneratedFunctions import print_image_array;
+from aiGeneratedFunctions import display_predictions;
 
 idToName = {
     0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9',
@@ -43,16 +45,6 @@ def trainNeuralNetwork():
     print_image_array(x_data[0])
     print(y_data);
 
-    #Cutting data set into halves to train and test
-    #x_split = np.split(x_data,2);
-    #print(x_split);
-    #x_train = x_split[0];
-    #x_test = x_split[1];
-    
-    #y_split = np.split(y_data,2);
-    #y_train = y_split[0];
-    #y_test = y_split[1]
-
     x_train = x_data
     y_train = y_data
 
@@ -77,10 +69,14 @@ def trainNeuralNetwork():
 
     model.save("JMEodel.keras")
 
+
+
+
 def evaluateUsingLabeledData():
     model = tf.keras.models.load_model("JMEodel.keras")
     imagesToPredict = load_nonlabeled_data("28by28_Drawn");
-
+    display_predictions(model,imagesToPredict,idToName)
+    '''
     for image in imagesToPredict:
         try:
             print_image_array(image)
@@ -90,6 +86,10 @@ def evaluateUsingLabeledData():
             plt.show()
         except:
             print("SOMETHING WENT WRONG")
+    '''
+
+
+
 
 def predictUsingModel():
     print("predictUsingModel");
@@ -112,9 +112,3 @@ while True:
 
 
 
-
-    
-    #loss, accuracy = model.evaluate(x_test, y_test)
-
-    #print(loss);
-    #print(accuracy);
