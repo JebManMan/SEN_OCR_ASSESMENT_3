@@ -125,7 +125,7 @@ def print_image_array(image_array):
     for row in image_array:
         print(' '.join(f'{val:3}' for val in row))
 
-
+'''
 #Gnerated on the 9/06/2025 using copiolet
 #Modified and reviewed
 def display_predictions(model, imagesToPredict, idToName):
@@ -156,6 +156,10 @@ def display_predictions(model, imagesToPredict, idToName):
             prediction = model.predict(image)
             predicted_class = int(np.argmax(prediction))
             predicted_label = idToName[predicted_class]
+
+            for confidenceScores in prediction:
+                for specificScoer in confidenceScores:
+                    print(specificScoer);
             
             # Display image and predicted label
             ax.imshow(image[0], cmap='binary')
@@ -165,7 +169,53 @@ def display_predictions(model, imagesToPredict, idToName):
             print(f"Error processing image {i}: {e}")
             ax.text(0.5, 0.5, "Error", ha="center", va="center", transform=ax.transAxes)
             ax.axis('off')
+'''
+#NEW TEST
+def display_predictions(model, imagesToPredict, idToName):
+    num_images = len(imagesToPredict)
+    if num_images == 0:
+        print("No images provided.")
+        return
+
+    # Determine grid size based on the number of images
+    nrows = int(math.ceil(math.sqrt(num_images)))
+    ncols = int(math.ceil(num_images / nrows))
     
+    # Create a figure with the appropriate number of subplots
+    fig, axes = plt.subplots(nrows, ncols, figsize=(ncols * 3, nrows * 3))
+    
+    # Ensure axes is iterable even for a single image
+    if num_images == 1:
+        axes = [axes]
+    else:
+        axes = axes.flatten()
+
+    # Loop over images and make predictions
+    for i, image in enumerate(imagesToPredict):
+        ax = axes[i]
+        try:
+            prediction = model.predict(image)
+            predicted_class = int(np.argmax(prediction))
+            predicted_label = idToName[predicted_class]
+            
+            ax.imshow(image[0], cmap='binary')
+            ax.set_title(predicted_label)
+            ax.axis('off')
+        except Exception as e:
+            print(f"Error processing image {i}: {e}")
+            ax.text(0.5, 0.5, "Error", ha="center", va="center", transform=ax.transAxes)
+            ax.axis('off')
+    
+    # Hide any extra subplots in the grid
+    for j in range(i + 1, len(axes)):
+        axes[j].axis('off')
+    
+    plt.tight_layout()
+    # Open the figure in non-blocking mode
+    plt.show(block=False)
+    # Pause briefly so that matplotlib processes its events.
+    plt.pause(0.001)
+
     # Hide any extra subplots in the grid
     for j in range(i + 1, len(axes)):
         axes[j].axis('off')
